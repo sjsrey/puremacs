@@ -123,16 +123,16 @@
 ;; first time will have to run
 ;; all-the-icons-install-fonts
 
-(use-package general
-  :config
-  (general-create-definer rune/leader-keys
-			  :keymaps '(normal insert visual emacs)
-			  :prefix "SPC"
-			  :global-previx "C-SPC")
-  (rune/leader-keys
-   "t" '(:ignore t :which-key "toggles")
-   "tt" '(counsel-load-theme :which-key "choose theme"))
-  ) 
+;(use-package general
+;  :config
+;  (general-create-definer rune/leader-keys
+;			  :keymaps '(normal insert visual emacs)
+;			  :prefix "SPC"
+;			  :global-previx "C-SPC")
+;(rune/leader-keys
+;  "t" '(:ignore t :which-key "toggles")
+;  "tt" '(counsel-load-theme :which-key "choose theme"))
+;  ) 
 
 (general-define-key
  "C-M-j" 'counsel-switch-buffer
@@ -169,5 +169,34 @@
   ("k" text-scale-decrease "out")
   ("f" nil "finished" :exit t))
 
-(rune/leader-keys
- "ts" '(hydra-text-scale/body :which-key "scale text"))
+;(rune/leader-keys
+; "ts" '(hydra-text-scale/body :which-key "scale text"))
+
+;; git stuff
+
+
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/")
+    (setq projectile-project-search-path '("~/")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
+
+;; magit
+
+(use-package magit
+  :commands (magit-status magit-get-current-branch)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+;(use-package evil-magit)
